@@ -46,6 +46,7 @@ function App() {
     try {
       const generatedPlan = await getWorkoutFromGemini(selectedGoals, equipment, isBodyweightOnly);
       setWorkoutPlan(generatedPlan);
+      toggleWorkoutShown()
     } catch (err) {
       setError(err.message);
     } finally {
@@ -128,7 +129,7 @@ function App() {
         }
 
 
-        {workoutShown ? <Workout /> : null}
+        {workoutShown ? <Workout plan={workoutPlan} /> : null}
         </div>
     
         
