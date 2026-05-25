@@ -129,7 +129,7 @@ function App() {
         }
 
 
-        {workoutShown ? <Workout plan={workoutPlan} /> : null}
+        {workoutShown ? <Workout plan={workoutPlan} isLoading={isLoading} /> : null}
         </div>
     
         
