@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { getWorkoutFromGemini } from './ai';
 import './App.css'
 import Header from './Header'
 import EquipmentList from './EquipmentList'
@@ -9,9 +10,18 @@ function App() {
    const [equipment, setEquipment] = useState(
         []
     )
+    const [workoutPlan, setWorkoutPlan] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
+
     const [workoutShown, setWorkoutShown] = useState(false)
     const [selectedGoals, setSelectedGoals] = useState([]);
     const [isBodyweightOnly, setIsBodyweightOnly] = useState(false);
+
+    // Clear equipment input if user switches to bodyweight
+        useEffect(() => {
+            if (isBodyweightOnly) setEquipment([]);
+        }, [isBodyweightOnly]);
 
     const toggleGoal = (goal) => {
     setSelectedGoals(prev => 
@@ -22,7 +32,7 @@ function App() {
     function toggleWorkoutShown() {
         setWorkoutShown(prevShown => !prevShown)
     }
-
+ 
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -30,6 +40,18 @@ function App() {
         setEquipment(prev => [...prev, value]);
         e.target.reset();
     }
+    async function generateWorkoutPlan() {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const generatedPlan = await getWorkoutFromGemini(selectedGoals, equipment, isBodyweightOnly);
+      setWorkoutPlan(generatedPlan);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   return (
 <div className="min-h-screen bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-50 transition-colors duration-200">      <Header />
@@ -99,7 +121,7 @@ function App() {
             {equipment.length > 0 ?
             <EquipmentList
                 equipment={equipment}
-                toggleWorkoutShown={toggleWorkoutShown}
+                toggleWorkoutShown={generateWorkoutPlan}
                 isBodyweightOnly={isBodyweightOnly}
                 hasGoalsSelected={selectedGoals.length > 0}
             /> : null

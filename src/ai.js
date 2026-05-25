@@ -1,0 +1,41 @@
+// src/ai.js
+import { GoogleGenAI } from '@google/genai/web';
+
+// Initialize the client. In development, we can pull from import.meta.env
+const ai = new GoogleGenAI({ 
+  apiKey: import.meta.env.VITE_GEMINI_API_KEY 
+});
+
+export async function getWorkoutFromGemini(goalsArray, equipmentArray, isBodyweightOnly) {
+  // format the parameters into text strings for the prompt
+  const goalsString = goalsArray.join(', ');
+  const equipmentString = isBodyweightOnly 
+    ? 'No equipment (Pure Bodyweight training only)' 
+    : equipmentArray.join(', ');
+
+  // draft an explicit system instruction prompt
+  const prompt = `
+    You are an elite personal trainer and fitness programmer. 
+    Create a highly personalized, structured workout plan based on these user constraints:
+    
+    - Target Goals: ${goalsString}
+    - Available Equipment: ${equipmentString}
+    
+    Please provide a complete, actionable routine. Include an introductory line, a warm-up, the main exercise blocks (complete with specific target sets and reps), and a brief cool-down. 
+    
+    Format your entire response using clean, semantic Markdown (use headers, bold text, and bullet points) so it is highly readable. Do not mention any equipment that was not explicitly provided in the list.
+  `;
+
+  try {
+    // call the Gemini 2.5 Flash model text generation
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: prompt,
+    });
+    
+    return response.text;
+  } catch (error) {
+    console.error("Gemini API Error:", error);
+    throw new Error("Failed to generate workout. Please try again.");
+  }
+}
