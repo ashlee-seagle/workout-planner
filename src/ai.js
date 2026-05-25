@@ -16,12 +16,12 @@ export async function getWorkoutFromGemini(goalsArray, equipmentArray, isBodywei
   // draft an explicit system instruction prompt
   const prompt = `
     You are an elite personal trainer and fitness programmer. 
-    Create a highly personalized, structured workout plan based on these user constraints:
+    Create a brief, highly concise workout routine based on these user constraints:
     
     - Target Goals: ${goalsString}
     - Available Equipment: ${equipmentString}
     
-    Please provide a complete, actionable routine. Include an introductory line, a warm-up, the main exercise blocks (complete with specific target sets and reps), and a brief cool-down. 
+    Keep the routine punchy, minimal, and straight to the point. Include a quick warm-up, the main exercise blocks (with specific sets and reps), and a brief cool-down. Avoid unnecessary fluff or long explanations.
     
     Format your entire response using clean, semantic Markdown (use headers, bold text, and bullet points) so it is highly readable. Do not mention any equipment that was not explicitly provided in the list.
   `;
