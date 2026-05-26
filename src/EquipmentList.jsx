@@ -1,4 +1,4 @@
-export default function EquipmentList({equipment, isBodyweightOnly, hasGoalsSelected, toggleWorkoutShown}) {
+export default function EquipmentList({equipment, isBodyweightOnly, hasGoalsSelected, toggleWorkoutShown, removeEquipment}) {
     const equipmentListItems = equipment.map(equipment => (
         <li key={equipment}>{equipment}</li>
     ))
@@ -8,9 +8,26 @@ export default function EquipmentList({equipment, isBodyweightOnly, hasGoalsSele
       {!isBodyweightOnly && (
         <>
           <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300">Equipment on hand:</h3>
-          <ul className="list-disc list-inside space-y-1 mt-2 mb-6 pl-2 text-gray-600 dark:text-gray-400" aria-live="polite">
+          <ul className="flex flex-wrap gap-3" aria-live="polite">
             {equipment.map(item => (
-              <li key={item} className="capitalize">{item}</li>
+                <button 
+                    onClick={() => removeEquipment(item)}
+                    className="inline-flex items-center gap-2 px-3 py-1.5 
+                                bg-blue-50 dark:bg-slate-800 
+                                text-blue-700 dark:text-blue-300 
+                                rounded-full text-sm font-medium 
+                                border border-blue-200 dark:border-slate-700 
+                                transition-all duration-150 cursor-pointer
+                                
+
+                                hover:bg-red-50 dark:hover:bg-red-950/40 
+                                hover:text-red-600 dark:hover:text-red-400 
+                                hover:border-red-200 dark:hover:border-red-900"
+                    aria-label={`Remove ${item}`}
+                    >
+                    {item}
+                    <span className="font-bold text-xs opacity-70 hover:opacity-100">✕</span>
+            </button>
             ))}
           </ul>
         </> 

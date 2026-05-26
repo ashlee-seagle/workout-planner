@@ -40,6 +40,11 @@ function App() {
         setEquipment(prev => [...prev, value]);
         e.target.reset();
     }
+    const removeEquipment = (itemToRemove) => {
+        setEquipment((prevEquipment) => 
+            prevEquipment.filter(item => item !== itemToRemove)
+        );
+        };
     async function generateWorkoutPlan() {
     setIsLoading(true);
     setError(null);
@@ -125,6 +130,7 @@ function App() {
                 toggleWorkoutShown={generateWorkoutPlan}
                 isBodyweightOnly={isBodyweightOnly}
                 hasGoalsSelected={selectedGoals.length > 0}
+                removeEquipment={removeEquipment}
             /> : null
         }
 
