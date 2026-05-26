@@ -63,7 +63,7 @@ function App() {
 <div className="min-h-screen bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-50 transition-colors duration-200">      <Header />
         <div className="mt-20 w-[90%] sm:w-[80%] md:w-1/2 max-w-2xl mx-auto">
         <h2 className="mt-2 text-3xl font-medium">1. What are your goals?</h2>
-        <div className="grid grid-cols-2 gap-3 my-4">
+        <div className="grid grid-cols-2 gap-3 mt-8 mb-16">
             {['Build Muscle', 'Lose Weight', 'Endurance', 'Mobility'].map(goal => {
                 const isSelected = selectedGoals.includes(goal);
                 return (
@@ -71,10 +71,10 @@ function App() {
                     key={goal}
                     type="button" 
                     onClick={() => toggleGoal(goal)}
-                    className={`p-4 border rounded-xl font-medium transition ${
+                    className={`p-4 rounded-xl border font-medium transition ${
                     isSelected 
-                        ? 'bg-blue-600 text-white border-blue-600 shadow-md' 
-                        : 'bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-gray-700 hover:bg-gray-50'
+                        ? 'bg-[var(--selected-color)] text-white dark:border-transparent' 
+                        : 'bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-transparent hover:bg-gray-50'
                     }`}
                 >
                     {goal}
@@ -83,18 +83,7 @@ function App() {
             })}
         </div>
         <h2 className="mt-2 text-3xl font-medium">2. What equipment do you have?</h2>
-        <button
-                type="button"
-                onClick={() => setIsBodyweightOnly(prev => !prev)}
-                className={`px-3 py-1.5 text-xs font-medium rounded-full border transition-all ${
-                    isBodyweightOnly
-                    ? 'bg-blue-100 text-blue-800 border-blue-300 dark:bg-blue-950/50 dark:text-blue-300 dark:border-blue-800 shadow-sm'
-                    : 'bg-white text-gray-600 border-gray-300 dark:bg-gray-900 dark:text-gray-400 dark:border-gray-700 hover:bg-gray-50'
-                }`}
-            >
-            {isBodyweightOnly ? '✓ Bodyweight Only Active' : '+ Pure Bodyweight / No Equipment'}
-            </button>
-            <form onSubmit={handleSubmit} className="space-y-4 my-20">
+        <form onSubmit={handleSubmit} className="space-y-4 my-8">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3">
   {isBodyweightOnly ? (
     <div className="flex-1 px-3 py-2 bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-500 dark:text-gray-400 text-sm font-medium rounded-md italic transition-all">
@@ -123,6 +112,18 @@ function App() {
   </button>
 </div>
             </form>
+        <button
+                type="button"
+                onClick={() => setIsBodyweightOnly(prev => !prev)}
+                className={`px-3 py-1.5 text-xs font-medium rounded-full border transition-all ${
+                    isBodyweightOnly
+                    ? 'bg-blue-100 text-blue-800 border-blue-300 dark:bg-blue-950/50 dark:text-blue-300 dark:border-blue-800 shadow-sm'
+                    : 'bg-white text-gray-600 border-gray-300 dark:bg-gray-900 dark:text-gray-400 dark:border-gray-700 hover:bg-gray-50'
+                }`}
+            >
+            {isBodyweightOnly ? '✓ Bodyweight Only Active' : '+ Pure Bodyweight / No Equipment'}
+            </button>
+        
             
             {equipment.length > 0 ?
             <EquipmentList
