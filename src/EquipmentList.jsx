@@ -7,6 +7,7 @@ export default function EquipmentList({equipment, isBodyweightOnly, hasGoalsSele
           <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300">Equipment on hand:</h3>
           <ul className="flex flex-wrap gap-3" aria-live="polite">
             {equipment.map(item => (
+              <li key={item}>
                 <button 
                     onClick={() => removeEquipment(item)}
                     className="inline-flex items-center gap-2 px-3 py-1.5 
@@ -24,7 +25,8 @@ export default function EquipmentList({equipment, isBodyweightOnly, hasGoalsSele
                     >
                     {item}
                     <span className="font-bold text-xs opacity-70 hover:opacity-100">✕</span>
-            </button>
+                </button>
+              </li>
             ))}
           </ul>
         </> 
