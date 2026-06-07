@@ -1,7 +1,4 @@
 export default function EquipmentList({equipment, isBodyweightOnly, hasGoalsSelected, toggleWorkoutShown, removeEquipment}) {
-    const equipmentListItems = equipment.map(equipment => (
-        <li key={equipment}>{equipment}</li>
-    ))
     const isReadyForWorkout = hasGoalsSelected && (isBodyweightOnly || equipment.length > 0);
     return (
         <section className="mt-8 transition-all">
