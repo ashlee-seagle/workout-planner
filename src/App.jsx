@@ -5,18 +5,33 @@ import Header from './Header'
 import EquipmentList from './EquipmentList'
 import Workout from './Workout'
 
+// TODO: refactor so it is cleaner and looks more like this:
+
+// <Header />
+// <main>
+//   <GoalSelector />
+//   <EquipmentSelector />
+//   <GenerateWorkoutPanel />
+//   <WorkoutResult />
+// </main>
+
 function App() {
 
+    // TODO: Combine into userPreferences state?
    const [equipment, setEquipment] = useState(
         []
     )
+      const [selectedGoals, setSelectedGoals] = useState([]);
+    const [isBodyweightOnly, setIsBodyweightOnly] = useState(false);
+    //
+
+
     const [workoutPlan, setWorkoutPlan] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
     const [workoutShown, setWorkoutShown] = useState(false)
-    const [selectedGoals, setSelectedGoals] = useState([]);
-    const [isBodyweightOnly, setIsBodyweightOnly] = useState(false);
+  
 
     // Clear equipment input if user switches to bodyweight
         useEffect(() => {
@@ -60,8 +75,10 @@ function App() {
   }
 
   return (
-<div className="min-h-screen bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-50 transition-colors duration-200">      <Header />
+<div className="min-h-screen bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-50 transition-colors duration-200">      
+    <Header />
         <div className="mt-20 w-[90%] sm:w-[80%] md:w-1/2 max-w-2xl mx-auto">
+        {/* GoalSelector */}
         <h2 className="mt-2 text-3xl font-medium">1. What are your goals?</h2>
         <div className="grid grid-cols-2 gap-3 mt-8 mb-16">
             {['Build Muscle', 'Lose Weight', 'Endurance', 'Mobility'].map(goal => {
@@ -82,6 +99,8 @@ function App() {
                 );
             })}
         </div>
+         {/* end GoalSelector */}
+         {/* EquipmentSelector */}
         <h2 className="mt-2 text-3xl font-medium">2. What equipment do you have?</h2>
         <form onSubmit={handleSubmit} className="space-y-4 my-8">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3">
@@ -123,8 +142,9 @@ function App() {
             >
             {isBodyweightOnly ? '✓ Bodyweight Only Active' : '+ Pure Bodyweight / No Equipment'}
             </button>
+            {/* end EquipmentSelector */}
         
-            
+            {/* TODO: Decide whether EquipmentList belongs inside EquipmentSelector or stays separate */}
             {equipment.length > 0 ?
             <EquipmentList
                 equipment={equipment}
