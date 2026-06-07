@@ -4,6 +4,7 @@ import './App.css'
 import Header from './Header'
 import EquipmentList from './EquipmentList'
 import Workout from './Workout'
+import GoalSelector from './GoalSelector'
 
 // TODO: refactor so it is cleaner and looks more like this:
 
@@ -70,7 +71,7 @@ function App() {
     } catch (err) {
       setError(err.message);
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); 
     }
   }
 
@@ -78,28 +79,11 @@ function App() {
 <div className="min-h-screen bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-50 transition-colors duration-200">      
     <Header />
         <div className="mt-20 w-[90%] sm:w-[80%] md:w-1/2 max-w-2xl mx-auto">
-        {/* GoalSelector */}
-        <h2 className="mt-2 text-3xl font-medium">1. What are your goals?</h2>
-        <div className="grid grid-cols-2 gap-3 mt-8 mb-16">
-            {['Build Muscle', 'Lose Weight', 'Endurance', 'Mobility'].map(goal => {
-                const isSelected = selectedGoals.includes(goal);
-                return (
-                <button
-                    key={goal}
-                    type="button" 
-                    onClick={() => toggleGoal(goal)}
-                    className={`p-4 rounded-xl border font-medium transition ${
-                    isSelected 
-                        ? 'bg-[var(--selected-color)] text-white dark:border-transparent' 
-                        : 'bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-transparent hover:bg-gray-50'
-                    }`}
-                >
-                    {goal}
-                </button>
-                );
-            })}
-        </div>
-         {/* end GoalSelector */}
+        <GoalSelector
+            goals={['Build Muscle', 'Lose Weight', 'Endurance', 'Mobility']}
+            selectedGoals={selectedGoals}
+            onToggleGoal={toggleGoal}
+        />
          {/* EquipmentSelector */}
         <h2 className="mt-2 text-3xl font-medium">2. What equipment do you have?</h2>
         <form onSubmit={handleSubmit} className="space-y-4 my-8">
