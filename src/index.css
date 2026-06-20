@@ -8,6 +8,11 @@
 :root {
   --selected-color: #0EA5E9;
 }
-header > img {
-  width: 50px;
+
+body {
+  min-width: 320px;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

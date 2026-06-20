@@ -30,4 +30,5 @@ export function ThemeProvider({ children }) {
 }
 
 // hook to grab theme values instantly in child components
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTheme = () => useContext(ThemeContext);

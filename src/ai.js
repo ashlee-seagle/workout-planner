@@ -36,6 +36,6 @@ export async function getWorkoutFromGemini(goalsArray, equipmentArray, isBodywei
     return response.text;
   } catch (error) {
     console.error("Gemini API Error:", error);
-    throw new Error("Failed to generate workout. Please try again.");
+    throw new Error("Failed to generate workout. Please try again.", { cause: error });
   }
 }
