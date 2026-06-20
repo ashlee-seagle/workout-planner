@@ -1,14 +1,38 @@
-function EquipmentSelector({ isBodyweightOnly, onAddEquipment, onToggleBodyweightOnly }) {
-  function handleSubmit(e) {
+import type { FormEvent } from "react";
+type EquipmentSelectorProps = {
+  isBodyweightOnly: boolean;
+  onAddEquipment: (equipment: string) => void;
+  onToggleBodyweightOnly: () => void;
+};
+
+export default function EquipmentSelector({
+  isBodyweightOnly,
+  onAddEquipment,
+  onToggleBodyweightOnly,
+}: EquipmentSelectorProps) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>): void {
     e.preventDefault();
-    const value = e.target.elements.equipment.value;
-    onAddEquipment(value);
-    e.target.reset();
+
+    const formData = new FormData(e.currentTarget);
+    const value = formData.get("equipment");
+
+    // Narrow value from string | File | null to string
+    if (typeof value !== "string") return;
+
+    const equipmentName = value.trim();
+
+    if (!equipmentName) return;
+
+    onAddEquipment(equipmentName);
+
+    e.currentTarget.reset();
   }
 
   return (
     <>
-      <h2 className="mt-2 text-3xl font-medium">2. What equipment do you have?</h2>
+      <h2 className="mt-2 text-3xl font-medium">
+        2. What equipment do you have?
+      </h2>
       <form onSubmit={handleSubmit} className="space-y-4 my-8">
         <div className="flex flex-col sm:flex-row sm:items-center gap-3">
           {isBodyweightOnly ? (
@@ -29,8 +53,8 @@ function EquipmentSelector({ isBodyweightOnly, onAddEquipment, onToggleBodyweigh
             disabled={isBodyweightOnly}
             className={`whitespace-nowrap px-4 py-2 font-medium rounded-md shadow transition ${
               isBodyweightOnly
-                ? 'bg-gray-200 dark:bg-gray-800 text-gray-400 dark:text-gray-600 cursor-not-allowed shadow-none'
-                : 'bg-black dark:bg-gray-100 text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200'
+                ? "bg-gray-200 dark:bg-gray-800 text-gray-400 dark:text-gray-600 cursor-not-allowed shadow-none"
+                : "bg-black dark:bg-gray-100 text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200"
             }`}
           >
             Add
@@ -42,14 +66,14 @@ function EquipmentSelector({ isBodyweightOnly, onAddEquipment, onToggleBodyweigh
         onClick={onToggleBodyweightOnly}
         className={`px-3 py-1.5 text-xs font-medium rounded-full border transition-all ${
           isBodyweightOnly
-            ? 'bg-blue-100 text-blue-800 border-blue-300 dark:bg-blue-950/50 dark:text-blue-300 dark:border-blue-800 shadow-sm'
-            : 'bg-white text-gray-600 border-gray-300 dark:bg-gray-900 dark:text-gray-400 dark:border-gray-700 hover:bg-gray-50'
+            ? "bg-blue-100 text-blue-800 border-blue-300 dark:bg-blue-950/50 dark:text-blue-300 dark:border-blue-800 shadow-sm"
+            : "bg-white text-gray-600 border-gray-300 dark:bg-gray-900 dark:text-gray-400 dark:border-gray-700 hover:bg-gray-50"
         }`}
       >
-        {isBodyweightOnly ? '✓ Bodyweight Only Active' : '+ Pure Bodyweight / No Equipment'}
+        {isBodyweightOnly
+          ? "✓ Bodyweight Only Active"
+          : "+ Pure Bodyweight / No Equipment"}
       </button>
     </>
   );
 }
-
-export default EquipmentSelector
