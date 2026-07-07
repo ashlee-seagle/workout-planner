@@ -8,7 +8,7 @@ An AI-powered workout planner that generates personalized strength training rout
 
 ## Live Demo
 
-🔗 (https://workout-planner-six-lilac.vercel.app/)
+🔗 https://workout-planner-six-lilac.vercel.app/
 
 ## Features
 
