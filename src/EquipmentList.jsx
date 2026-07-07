@@ -1,6 +1,6 @@
-import { Sparkles, X } from "lucide-react"
+import { Loader2, Sparkles, X } from "lucide-react"
 
-export default function EquipmentList({equipment, isBodyweightOnly, hasGoalsSelected, toggleWorkoutShown, removeEquipment}) {
+export default function EquipmentList({equipment, isBodyweightOnly, hasGoalsSelected, toggleWorkoutShown, removeEquipment, isLoading}) {
     const isReadyForWorkout = hasGoalsSelected && (isBodyweightOnly || equipment.length > 0);
     return (
         <section className="mt-6 transition-all">
@@ -29,19 +29,33 @@ export default function EquipmentList({equipment, isBodyweightOnly, hasGoalsSele
         <div className="my-8 flex flex-col gap-4 rounded-2xl border border-sky-200 bg-sky-50/80 p-5 shadow-lg shadow-sky-100/70 dark:border-sky-500/30 dark:bg-sky-500/10 dark:shadow-black/20 sm:flex-row sm:items-center sm:justify-between sm:p-6">
           <div className="flex items-start gap-4">
             <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-sky-600 text-white shadow-lg shadow-sky-600/20">
-              <Sparkles className="h-6 w-6" />
+              {isLoading ? <Loader2 className="h-6 w-6 animate-spin" /> : <Sparkles className="h-6 w-6" />}
             </span>
           <div>
-            <h4 className="text-lg font-bold text-slate-950 dark:text-white">Ready for your plan?</h4>
-            <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-300">We'll build a routine tailored specifically to your configuration.</p>
+            <h4 className="text-lg font-bold text-slate-950 dark:text-white">
+              {isLoading ? "Generating your workout..." : "Ready for your plan?"}
+            </h4>
+            <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-300">
+              {isLoading
+                ? "Hang tight while your routine is built from these selections."
+                : "We'll build a routine tailored specifically to your configuration."}
+            </p>
           </div>
           </div>
-          {/* TODO: Add disabled, empty, and loading states for a more complete UX. */}
           <button 
             onClick={toggleWorkoutShown}
-            className="inline-flex min-h-12 items-center justify-center rounded-xl bg-sky-600 px-5 text-sm font-bold text-white shadow-lg shadow-sky-600/20 transition hover:-translate-y-0.5 hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-sky-50 dark:focus:ring-offset-slate-900"
+            disabled={isLoading}
+            aria-busy={isLoading}
+            className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-sky-600 px-5 text-sm font-bold text-white shadow-lg shadow-sky-600/20 transition hover:-translate-y-0.5 hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-sky-50 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 disabled:hover:bg-sky-600 dark:focus:ring-offset-slate-900 sm:w-auto"
           >
-            Generate Workout
+            {isLoading ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Generating...
+              </>
+            ) : (
+              "Generate Workout"
+            )}
           </button>
         </div>
       ) : (

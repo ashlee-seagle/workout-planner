@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { getWorkoutFromGemini } from './ai';
 import './App.css'
 import Header from './Header'
 import EquipmentList from './EquipmentList'
@@ -40,11 +39,6 @@ function App() {
     );
     };
 
-    function toggleWorkoutShown() {
-        setWorkoutShown(prevShown => !prevShown)
-    }
- 
-
     function addEquipment(value) {
         setEquipment(prev => [...prev, value]);
     }
@@ -60,14 +54,18 @@ function App() {
         );
         };
     async function generateWorkoutPlan() {
+    if (isLoading) return;
+
+    setWorkoutShown(true);
     setIsLoading(true);
     setError(null);
+    setWorkoutPlan("");
     try {
+      const { getWorkoutFromGemini } = await import('./ai');
       const generatedPlan = await getWorkoutFromGemini(selectedGoals, equipment, isBodyweightOnly);
       setWorkoutPlan(generatedPlan);
-      toggleWorkoutShown()
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Something went wrong while generating your workout. Please try again.");
     } finally {
       setIsLoading(false); 
     }
@@ -95,6 +93,12 @@ function App() {
             onAddEquipment={addEquipment}
             onToggleBodyweightOnly={toggleBodyweightOnly}
         />
+
+        {!isBodyweightOnly && equipment.length === 0 ? (
+            <p className="mt-5 rounded-xl border border-dashed border-slate-300 bg-slate-50/80 p-4 text-sm font-medium text-slate-600 dark:border-white/15 dark:bg-slate-950/30 dark:text-slate-300">
+                No equipment selected yet. Add what you have available, or choose bodyweight-only to continue without equipment.
+            </p>
+        ) : null}
         
             {equipment.length > 0 || isBodyweightOnly ?
             <EquipmentList
@@ -103,17 +107,29 @@ function App() {
                 isBodyweightOnly={isBodyweightOnly}
                 hasGoalsSelected={selectedGoals.length > 0}
                 removeEquipment={removeEquipment}
+                isLoading={isLoading}
             /> : null
         }
 
         {error ? (
-            <p className="my-6 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm font-semibold text-rose-700 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-200">
-                {error}
-            </p>
+            <div role="alert" className="my-6 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-200">
+                <p className="font-bold">We couldn't generate your workout just now.</p>
+                <p className="mt-1 font-medium">{error}</p>
+                {selectedGoals.length > 0 && (isBodyweightOnly || equipment.length > 0) ? (
+                    <button
+                        type="button"
+                        onClick={generateWorkoutPlan}
+                        disabled={isLoading}
+                        className="mt-4 inline-flex min-h-10 items-center justify-center rounded-lg bg-rose-600 px-4 text-sm font-bold text-white transition hover:bg-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 focus:ring-offset-rose-50 disabled:cursor-not-allowed disabled:opacity-60 dark:focus:ring-offset-slate-900"
+                    >
+                        Try again
+                    </button>
+                ) : null}
+            </div>
         ) : null}
 
 
-        {workoutShown ? <Workout plan={workoutPlan} isLoading={isLoading} /> : null}
+        <Workout plan={workoutPlan} isLoading={isLoading} hasStarted={workoutShown} />
         </div>
         </main>
     
