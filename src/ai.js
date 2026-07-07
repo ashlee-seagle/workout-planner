@@ -21,9 +21,21 @@ export async function getWorkoutFromGemini(goalsArray, equipmentArray, isBodywei
     - Target Goals: ${goalsString}
     - Available Equipment: ${equipmentString}
     
-    Keep the routine punchy, minimal, and straight to the point. Include a quick warm-up, the main exercise blocks (with specific sets and reps), and a brief cool-down. Avoid unnecessary fluff or long explanations.
+    Keep the routine punchy, minimal, and easy to scan. Avoid unnecessary fluff or long explanations.
     
-    Format your entire response using clean, semantic Markdown (use headers, bold text, and bullet points) so it is highly readable. Do not mention any equipment that was not explicitly provided in the list.
+    Return clean, predictable Markdown using these exact section headers:
+    ## Workout Overview
+    ## Warm-up
+    ## Main Workout
+    ## Cool Down
+    ## Notes
+
+    Formatting rules:
+    - Use short bullets under each section.
+    - For exercises, use this pattern when possible: **Exercise Name:** sets/reps/time - brief note.
+    - Do not use horizontal rules, "---", "***", or decorative separators.
+    - Do not wrap the response in a code block.
+    - Do not mention any equipment that was not explicitly provided in the list.
   `;
 
   try {

@@ -36,7 +36,17 @@ export default function GoalSelector({
         </div>
       </div>
 
-      <div className="mt-6 mb-12 grid gap-3 sm:grid-cols-2">
+      {selectedGoals.length === 0 ? (
+        <p className="mt-5 rounded-xl border border-dashed border-slate-300 bg-slate-50/80 p-4 text-sm font-medium text-slate-600 dark:border-white/15 dark:bg-slate-950/30 dark:text-slate-300">
+          No goals selected yet. Choose at least one goal so your plan has a clear focus.
+        </p>
+      ) : (
+        <p className="mt-5 text-sm font-semibold text-sky-700 dark:text-sky-300" aria-live="polite">
+          {selectedGoals.length} goal{selectedGoals.length === 1 ? "" : "s"} selected
+        </p>
+      )}
+
+      <div className="mb-12 mt-6 grid gap-3 sm:grid-cols-2">
         {goals.map((goal) => {
           const isSelected = selectedGoals.includes(goal);
           const Icon = goalIcons[goal];
